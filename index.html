@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Age Calculator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f65cac, #55f7ea);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    h1 {
+      color: rgb(0, 0, 0);
+      margin-bottom: 20px;
+    }
+
+    .box, .result {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      margin: 10px;
+      color: #333;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background: #8B5CF6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ed3a6d;
+    }
+
+    .results {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .number {
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #666;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>AGE CALCULATOR</h1>
+
+  <div class="box">
+    <input type="date" id="dob" max="">
+    <button onclick="calculateAge()">Calculate</button>
+  </div>
+
+  <div class="results">
+    <div class="result">
+      <div class="number" id="y">00</div>
+      <div class="label">YEAR</div>
+    </div>
+    <div class="result">
+      <div class="number" id="m">00</div>
+      <div class="label">MONTH</div>
+    </div>
+    <div class="result">
+      <div class="number" id="d">00</div>
+      <div class="label">DAY</div>
+    </div>
+  </div>
+
+  <script>
+    // Set max date to today (prevent future selection)
+    document.getElementById("dob").max = new Date().toISOString().split("T")[0];
+
+    function calculateAge() {
+      const dob = document.getElementById("dob").value;
+      if (!dob) {
+        alert("Please select your birth date.");
+        return;
+      }
+
+      const birthDate = new Date(dob);
+      const today = new Date();
+
+      if (birthDate > today) {
+        alert("Birth date cannot be in the future.");
+        return;
+      }
+
+      let years = today.getFullYear() - birthDate.getFullYear();
+      let months = today.getMonth() - birthDate.getMonth();
+      let days = today.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      document.getElementById("y").textContent = years.toString().padStart(2, '0');
+      document.getElementById("m").textContent = months.toString().padStart(2, '0');
+      document.getElementById("d").textContent = days.toString().padStart(2, '0');
+    }
+  </script>
+
+</body>
+</html>
